@@ -1,8 +1,21 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import PictureItem from './Picture-item';
-import {urlSrc, limitList} from '../../constants';
-import { Row } from 'react-styled-flexboxgrid';
+import {PICSUM_URL, LIMIT_LIST} from '../../constants';
+import { css } from 'emotion';
+
+const styles = {
+    fontStyle :{
+    textAlign : 'center',
+    color : '#00BFFF',
+    margin : '50px 0px'}
+    ,
+    columnStyle :{
+        flex: '33.33%',
+        padding: '5px',
+    },
+
+    };
 
 class PicturesList extends Component {
     state = {
@@ -10,9 +23,9 @@ class PicturesList extends Component {
     }
 
     componentDidMount() {
-        axios.get(`${urlSrc}/list`)
+        axios.get(`${PICSUM_URL}/list`)
             .then(res => {
-                const pictures = res.data.slice(1,limitList);
+                const pictures = res.data.slice(1,LIMIT_LIST);
                 this.setState({ pictures });
             })
     }
@@ -24,16 +37,19 @@ class PicturesList extends Component {
         });
 
         return (
-            // render at the same level
+
             <React.Fragment>
-                <h1 className="title-pictures-list"> List of Pictures</h1>
-                    <Row>
+                <h1 className={css(styles.fontStyle)}>
+                    List of Pictures
+                </h1>
+                <div  className={css`display: flex;`}>
+                    <div className={css(styles.columnStyle)}>
                         {pictureListItems}
-                    </Row>
+                    </div>
+                </div>
             </React.Fragment>
         );
     }
 }
-
 
 export default PicturesList;

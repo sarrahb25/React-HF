@@ -1,28 +1,22 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { css } from 'emotion';
 
+const calculateUrl = (itemPictureProp) => {
+    return (`https://picsum.photos/ ${itemPictureProp.width} / ${itemPictureProp.height} ?image=  ${itemPictureProp.id}`);
+}
 
-class PictureItem extends Component {
+const styleImg  = {
+    padding: '25px',
+    margin: '30px 0px',
+    width: '150px',
+    height: '150px',
+    };
 
+const  PictureItem = (props) => {
 
-    itemPicture = this.props.itemPicture;
-
-    render() {
-
-        // get imgPicture if the url exist
-        const imgPicture = this.itemPicture ? <img style={{width: '150px', height: '150px'}} className='picture-img' src = {'https://picsum.photos' + '/' + this.itemPicture.width + '/' + this.itemPicture.height + '?image=' + this.itemPicture.id}  alt = {this.itemPicture.filename} /> : '';
-
-        return (
-            <div className={css`
-                    padding: 32px;
-                     `
-                }
-            >
-                {imgPicture}
-            </div>
-        );
-    }
-
+    return (
+        props.itemPicture ? <img className={css(styleImg)} alt="" src={calculateUrl(props.itemPicture)} /> :''
+    );
 }
 
 export default PictureItem;
