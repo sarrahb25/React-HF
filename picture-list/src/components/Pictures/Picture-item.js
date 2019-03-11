@@ -15,8 +15,7 @@ class PictureItem extends Component {
         return (
             <div className={css`
                     padding: 32px;
-                    font-size: 24px;
-                    border-radius: 4px; }`
+                     `
                 }
             >
                 {imgPicture}
