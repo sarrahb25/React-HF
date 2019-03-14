@@ -6,7 +6,7 @@ import SubHeading from "../text/SubHeading";
 class PictureItemDetail extends Component {
 
     render() {
-        //console.log(this.props)
+        console.log(this.props)
         let {urlPicture, author} = this.props.location.state;
         return (
             <div className={css(styles.pictureWrapper)}>
@@ -20,8 +20,7 @@ class PictureItemDetail extends Component {
             </div>
         );
     }
-
-}
+};
 
 export default PictureItemDetail;
 
@@ -46,6 +45,4 @@ const styles = {
         width: '100%',
         maxWidth: '100%'
     }
-
-
 };
