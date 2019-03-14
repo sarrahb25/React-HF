@@ -1,13 +1,22 @@
 import React, { Component } from 'react';
-import './App.css';
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 import PicturesList from './components/Pictures/Picture-list';
+import PictureItemDetail from './components/Pictures/Picture-item-details';
 
 class App extends Component {
     render() {
-        return (
-            <PicturesList />
-        );
+        return <Router>
+            <div>
+                <Route exact path="/" render={() => {
+                    return <PicturesList />;
+                }} />
+                <Route exact path="/image/:id" render={(props) => {
+                    return <PictureItemDetail {...props}/>
+                }} />
+            </div>
+        </Router>;
     }
 }
 
 export default App;
+
