@@ -1,19 +1,12 @@
 import React from 'react';
 import { css } from 'emotion';
-import { PICSUM_URL } from '../../constants';
 import { withRouter } from 'react-router-dom';
+import calculateUrl from '../../utils/calculUrl';
 
-const calculateUrl = (itemPictureProp) => {
-    return (`${PICSUM_URL}/${itemPictureProp.width}/${itemPictureProp.height}?image=${itemPictureProp.id}`);
-};
 
 const goToDetailPicture = (itemPictureProp, history) => {
     history.push({
         pathname: `/image/${itemPictureProp.id}`,
-        state: { urlPicture: calculateUrl(itemPictureProp),
-                 pictureName: itemPictureProp.filename,
-                 author: itemPictureProp.author
-        }
     });
 };
 

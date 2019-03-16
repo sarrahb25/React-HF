@@ -2,25 +2,48 @@ import React, { Component } from 'react';
 import { css } from 'emotion';
 import Heading from "../text/Heading";
 import SubHeading from "../text/SubHeading";
+import getImage from '../../utils/utils';
+import calculateUrl from '../../utils/calculUrl';
+
+
 
 class PictureItemDetail extends Component {
 
+    state = {
+        Picture:null
+    };
+
+
+    componentDidMount() {
+        let  id = this.props.match.params.id;
+        getImage().then(res => {
+            const  section = res.data.slice(0,100);
+            const found = (section).find(x => x.id === parseInt(id));
+            this.setState({  Picture : found });
+        })
+
+    };
+
+
     render() {
-        console.log(this.props)
-        let {urlPicture, author} = this.props.location.state;
+
+        if (!this.state.Picture) return null; //spinner loading
         return (
             <div className={css(styles.pictureWrapper)}>
                 <span className={css(styles.infoWrapper)}>
                       <Heading>Author : </Heading>
-                      <span>
-                          <SubHeading>{author}</SubHeading>
-                      </span>
+
+                          <SubHeading>{this.state.Picture.author}</SubHeading>
+
                 </span>
-                <img className={css(styles.imgStyle)} src={urlPicture} alt ="" />
+                <img className={css(styles.imgStyle)}
+                     src={calculateUrl(this.state.Picture)}
+                     alt ="" />
             </div>
         );
     }
 };
+
 
 export default PictureItemDetail;
 
@@ -46,3 +69,4 @@ const styles = {
         maxWidth: '100%'
     }
 };
+
