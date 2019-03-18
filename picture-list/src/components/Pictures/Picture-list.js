@@ -1,28 +1,22 @@
 import React, { Component } from 'react';
 import PictureItem from './Picture-item';
-import { LIMIT_LIST } from '../../constants';
 import { css } from 'emotion';
-import getImage from '../../utils/utils';
 import  Heading  from '../text/Heading';
-
+import { connect } from 'react-redux';
+import {postsFetchData} from '../../store/actions/data_action';
 
 
 
 class PicturesList extends Component {
-    state = {
-        pictures: []
-    }
+
 
     componentDidMount() {
-        getImage().then(res => {
-            const pictures = res.data.slice(0,LIMIT_LIST);
-            this.setState({ pictures });
-        })
+        this.props.postsFetchData();
     };
 
     render() {
         // Parse List Picutres
-        const pictureListItems = this.state.pictures.map((item, index) => {
+        const pictureListItems =this.props.fieldData.pictures.map((item, index) => {
             return <PictureItem   key={index} itemPicture={item} history={this.props.history}/> ;
         });
 
@@ -42,8 +36,20 @@ class PicturesList extends Component {
     }
 }
 
+const mapStateToProps = state => {
+    return {
+        fieldData: state.fieldData
+    }
+};
 
-export default PicturesList;
+// const mapDispatchToProps = dispatch => {
+//     return {
+//        postsFetchData
+
+//     }
+// }
+
+export default connect(mapStateToProps, {postsFetchData})(PicturesList);
 
 const styles = {
     fontStyle: {

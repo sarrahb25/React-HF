@@ -2,50 +2,71 @@ import React, { Component } from 'react';
 import { css } from 'emotion';
 import Heading from "../text/Heading";
 import SubHeading from "../text/SubHeading";
-import getImage from '../../utils/utils';
 import calculateUrl from '../../utils/calculUrl';
-
+import { connect } from 'react-redux';
+import {postsFetchData, getPictureDetail} from '../../store/actions/data_action';
 
 
 class PictureItemDetail extends Component {
 
-    state = {
-        Picture:null
+    componentDidMount() { //get all img nothing else
+        let  id = this.props.match.params.id;
+        let pictures = this.props.fieldData.pictures;
+        if (pictures.length ===0)
+            this.props.postsFetchData();
+        this.props.getPictureDetail(pictures, id);
+
+
     };
 
 
-    componentDidMount() {
-        let  id = this.props.match.params.id;
-        getImage().then(res => {
-            const  section = res.data.slice(0,100);
-            const found = (section).find(x => x.id === parseInt(id));
-            this.setState({  Picture : found });
-        })
-
+    componentDidUpdate(prevProps, prevState) { //remove it to mapstatetoprops
+        if (prevProps.fieldData.pictures !== this.props.fieldData.pictures)
+        {    let  id = this.props.match.params.id;
+            let pictures = this.props.fieldData.pictures;
+            this.props.getPictureDetail(pictures, id);    }
     };
 
 
     render() {
 
-        if (!this.state.Picture) return null; //spinner loading
+        if (!this.props.fieldData.pictureDetail) return null; //spinner loading
+        //console.log(this.props);
+
+        let {author} = this.props.fieldData.pictureDetail ;// using ownstate
+
         return (
             <div className={css(styles.pictureWrapper)}>
                 <span className={css(styles.infoWrapper)}>
                       <Heading>Author : </Heading>
 
-                          <SubHeading>{this.state.Picture.author}</SubHeading>
+                          <SubHeading>{author}</SubHeading>
 
                 </span>
                 <img className={css(styles.imgStyle)}
-                     src={calculateUrl(this.state.Picture)}
+                     src={calculateUrl(this.props.fieldData.pictureDetail)}
                      alt ="" />
             </div>
         );
     }
 };
 
+const mapStateToProps = (state, ownProps) => { //  const mapStateToProps = (state, ownProps) => {  //object with props
+    return {
+        fieldData: state.fieldData
+       // ownProps.match.params.id
+    }
+};
 
-export default PictureItemDetail;
+// const mapDispatchToProps = dispatch => {
+//     return {
+//        postsFetchData
+
+//     }
+// }
+
+export default connect(mapStateToProps, {postsFetchData, getPictureDetail})(PictureItemDetail);
+
 
 const styles = {
     pictureWrapper: {
