@@ -29,7 +29,7 @@ class App extends Component {
                     return <PictureItemDetail {...props}/>
                 }} />
             </div>
-        </Router>;
+        </Router>
         </Provider>;
     }
 };

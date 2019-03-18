@@ -4,36 +4,25 @@ import Heading from "../text/Heading";
 import SubHeading from "../text/SubHeading";
 import calculateUrl from '../../utils/calculUrl';
 import { connect } from 'react-redux';
-import {postsFetchData, getPictureDetail} from '../../store/actions/data_action';
+import { postsFetchData } from '../../store/actions/data_action';
+import selectImageById from '../../store/selectors/selectImageById';
 
 
 class PictureItemDetail extends Component {
 
-    componentDidMount() { //get all img nothing else
-        let  id = this.props.match.params.id;
-        let pictures = this.props.fieldData.pictures;
-        if (pictures.length ===0)
-            this.props.postsFetchData();
-        this.props.getPictureDetail(pictures, id);
+    componentDidMount() {
 
+        this.props.postsFetchData();
 
     };
-
-
-    componentDidUpdate(prevProps, prevState) { //remove it to mapstatetoprops
-        if (prevProps.fieldData.pictures !== this.props.fieldData.pictures)
-        {    let  id = this.props.match.params.id;
-            let pictures = this.props.fieldData.pictures;
-            this.props.getPictureDetail(pictures, id);    }
-    };
-
 
     render() {
 
-        if (!this.props.fieldData.pictureDetail) return null; //spinner loading
-        //console.log(this.props);
 
-        let {author} = this.props.fieldData.pictureDetail ;// using ownstate
+        if (!this.props.getPictureDetail1) return null; //spinner loading
+
+
+        let author = this.props.getPictureDetail1.author ;
 
         return (
             <div className={css(styles.pictureWrapper)}>
@@ -44,28 +33,27 @@ class PictureItemDetail extends Component {
 
                 </span>
                 <img className={css(styles.imgStyle)}
-                     src={calculateUrl(this.props.fieldData.pictureDetail)}
+                     src={calculateUrl(this.props.getPictureDetail1)}
                      alt ="" />
             </div>
         );
     }
 };
 
-const mapStateToProps = (state, ownProps) => { //  const mapStateToProps = (state, ownProps) => {  //object with props
+const mapStateToProps = (state, ownProps) => {
+
+    let  id = ownProps.match.params.id;
+    const getPictureDetail1 = selectImageById(state.fieldData.pictures, id);
+
     return {
-        fieldData: state.fieldData
-       // ownProps.match.params.id
+        fieldData: state.fieldData,
+        getPictureDetail1 : getPictureDetail1
     }
+
 };
 
-// const mapDispatchToProps = dispatch => {
-//     return {
-//        postsFetchData
 
-//     }
-// }
-
-export default connect(mapStateToProps, {postsFetchData, getPictureDetail})(PictureItemDetail);
+export default connect(mapStateToProps, {postsFetchData})(PictureItemDetail);
 
 
 const styles = {
