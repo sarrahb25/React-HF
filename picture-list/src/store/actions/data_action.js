@@ -13,16 +13,3 @@ export const postsFetchData = () => dispatch => {
     })
 };
 
-// Filter Picture
-
-const findPicture = (PictureList, id) => {
-
-    return (PictureList).find(x => x.id === parseInt(id));
-};
-
-export const getPictureDetail = (PictureList, id) => dispatch => {
-    return dispatch ({
-        type: types.FIND_PICTURE,
-        payload: findPicture(PictureList, id)
-    })
-};

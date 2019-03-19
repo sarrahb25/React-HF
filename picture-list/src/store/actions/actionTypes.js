@@ -1,2 +1,1 @@
 export const LOADING_POSTS = 'LOADING_POSTS';
-export const FIND_PICTURE = 'FIND_PICTURE';
